@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Complet - Éligibilité Aides & Rénovation</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --danger: #c0392b;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --light: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Helvetica, sans-serif;
+            background: var(--light);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* HEADER */
+        header {
+            border-bottom: 4px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 26px;
+            text-transform: uppercase;
+        }
+
+        .sub-title {
+            color: var(--danger);
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* SECTIONS */
+        .section-block {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        .section-header {
+            background: var(--primary);
+            color: white;
+            padding: 10px 15px;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header span.badge {
+            background: var(--warning);
+            color: #333;
+            padding: 2px 8px;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            table-layout: fixed;
+        }
+
+        th {
+            background: #eee;
+            padding: 12px 8px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #ddd;
+        }
+
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+
+        /* INPUTS TABLE */
+        input[type="text"],
+        textarea {
+            width: 96%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 13px;
+            resize: vertical;
+            transition: 0.2s;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: var(--secondary);
+            background: #f0f8ff;
+            outline: none;
+        }
+
+        /* SPECIFIC COLUMNS */
+        .col-check {
+            width: 40px;
+            text-align: center;
+        }
+
+        .col-desordre {
+            width: 22%;
+        }
+
+        .col-desordre input {
+            font-weight: bold;
+            color: var(--danger);
+        }
+
+        .col-details {
+            width: 30%;
+        }
+
+        .col-solution {
+            width: 35%;
+        }
+
+        .col-solution textarea {
+            background: #e8f5e9;
+            border-left: 4px solid var(--success);
+            color: #1e5631;
+            font-weight: 500;
+        }
+
+        .col-action {
+            width: 40px;
+        }
+
+        /* CHECKBOX */
+        input[type="checkbox"] {
+            transform: scale(1.5);
+            cursor: pointer;
+            accent-color: var(--danger);
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .btn-add {
+            width: 100%;
+            background: #ecf0f1;
+            color: #333;
+            border: 2px dashed #bdc3c7;
+            margin-top: 5px;
+        }
+
+        .btn-add:hover {
+            background: #bdc3c7;
+        }
+
+        .btn-del {
+            background: #ffebee;
+            color: var(--danger);
+        }
+
+        .btn-del:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* SYNTHESE */
+        .synthesis-container {
+            border: 3px solid var(--primary);
+            padding: 20px;
+            margin-top: 50px;
+            background-color: #fcfcfc;
+            page-break-inside: avoid;
+        }
+
+        .synthesis-header {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        .signature-block {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .sig-box {
+            width: 45%;
+            border-top: 2px solid #333;
+            padding-top: 10px;
+        }
+
+        .floating-print {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            font-size: 16px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        /* PRINT MODE */
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+                max-width: 100%;
+            }
+
+            .no-print,
+            .btn,
+            .floating-print {
+                display: none !important;
+            }
+
+            input,
+            textarea {
+                border: none !important;
+                background: transparent !important;
+                padding: 2px !important;
+                resize: none;
+                overflow: hidden;
+            }
+
+            .col-solution textarea {
+                border-left: none !important;
+                color: black !important;
+                background: transparent !important;
+                font-weight: bold;
+            }
+
+            header {
+                margin-bottom: 10px;
+            }
+
+            .section-block,
+            .synthesis-container {
+                break-inside: avoid;
+            }
+
+            textarea {
+                height: auto;
+                min-height: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <div>
+                <h1>📋 Audit Complet Rénovation Globale</h1>
+                <div class="sub-title">DIAGNOSTIC "PASSOIRE ÉNERGÉTIQUE" → VALIDATION AIDES D'ÉTAT (MPR / CEE)</div>
+            </div>
+            <div style="text-align: right; font-size: 12px; color: #777;">
+                Document Audit Technique<br>Conforme MaPrimeRénov'<br><strong>Parcours Accompagné</strong>
+            </div>
+        </header>
+
+        <div class="info-grid">
+            <div class="input-group"><label>Date Audit</label><input type="text" value="22 Mai 2025"></div>
+            <div class="input-group"><label>Auditeur (N° RGE)</label><input type="text"
+                    value="Expert Renov - RGE Qualibat"></div>
+            <div class="input-group"><label>Adresse Bien</label><input type="text" value="10 rue de la Passoire, 75000">
+            </div>
+            <div class="input-group"><label>Classement DPE</label><input type="text" value="G (480 kWh/m²/an)"
+                    style="color:red;"></div>
+        </div>
+
+        <br>
+
+        <!-- SECTION 1 -->
+        <div class="section-block">
+            <div class="section-header">
+                1. PRÉ-REQUIS & SÉCURITÉ (Bloquants Dossier Aides)
+                <span class="badge">CRITIQUE</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-check">Vu</th>
+                        <th class="col-desordre">Désordre Constaté</th>
+                        <th class="col-details">Impact & Observations</th>
+                        <th class="col-solution">SOLUTION OBLIGATOIRE (Normes)</th>
+                        <th class="col-action no-print"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Humidité Remontées Capillaires"></td>
+                        <td><textarea>Salpêtre bas des murs RDC. Taux humidité > 20%. Papier peint décollé. Interdit d'isoler dessus.</textarea>
+                        </td>
+                        <td class="col-solution">
+                            <textarea>TRAITEMENT PRÉALABLE : Injection résine hydrophobe + Assèchement. (DTU 20.1)</textarea>
+                        </td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Infiltrations Toiture"></td>
+                        <td><textarea>Tuiles poreuses ou déplacées. Fuites actives. Laine existante mouillée (pourrie).</textarea>
+                        </td>
+                        <td class="col-solution">
+                            <textarea>RÉFECTION COUVERTURE : Remaniement ou remplacement tuiles + Zinguerie.</textarea>
+                        </td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Parasites (Bois)"></td>
+                        <td><textarea>Charpente attaquée (Vrillettes/Capricornes). Sciure visible.</textarea></td>
+                        <td class="col-solution">
+                            <textarea>TRAITEMENT CURATIF : Bûchage et injection certifié CTB-P+.</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Électricité Vétuste"></td>
+                        <td><textarea>Tableau fusibles, fils tissu, pas de Terre. Risque incendie sous isolant.</textarea>
+                        </td>
+                        <td class="col-solution">
+                            <textarea>MISE EN SÉCURITÉ : Norme NF C 15-100 avant travaux doublage.</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-add no-print" onclick="add(this)">+ Ajouter Ligne</button>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="section-block">
+            <div class="section-header">
+                2. TOITURE & COMBLES (30% Déperditions)
+                <span class="badge">PRIORITÉ N°1</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-check">Vu</th>
+                        <th class="col-desordre">Désordre Constaté</th>
+                        <th class="col-details">Impact & Observations</th>
+                        <th class="col-solution">SOLUTION & EXIGENCE AIDES (R)</th>
+                        <th class="col-action no-print"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Combles Perdus (Nus)"></td>
+                        <td><textarea>Isolant absent ou vieux (2cm tassé). Fuite thermique majeure.</textarea></td>
+                        <td class="col-solution"><textarea>SOUFFLAGE OUATE CELLULOSE ou LAINE MINÉRALE.
+✅ EXIGENCE AIDE : R ≥ 7.0 m².K/W (env. 35cm).</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Rampants (Sous-toit)"></td>
+                        <td><textarea>Chambres étage : Fournaise été / Froid hiver. Isolant mince inefficace.</textarea>
+                        </td>
+                        <td class="col-solution"><textarea>ISOLATION SOUS RAMPANT (Haute Densité pour confort été RE2020).
+✅ EXIGENCE AIDE : R ≥ 6.0 m².K/W.</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Trappe Grenier"></td>
+                        <td><textarea>Trappe bois simple, non étanche. Courant d'air.</textarea></td>
+                        <td class="col-solution"><textarea>COFFRAGE ISOLÉ + JOINTS ÉTANCHÉITÉ. R > 4.</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-add no-print" onclick="add(this)">+ Ajouter Ligne</button>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="section-block">
+            <div class="section-header">
+                3. MURS & FAÇADES (25% Déperditions)
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-check">Vu</th>
+                        <th class="col-desordre">Désordre Constaté</th>
+                        <th class="col-details">Impact & Observations</th>
+                        <th class="col-solution">SOLUTION & EXIGENCE AIDES (R)</th>
+                        <th class="col-action no-print"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Murs Non Isolés"></td>
+                        <td><textarea>Parpaing/Brique sans doublage. Paroi froide. Inconfort total.</textarea></td>
+                        <td class="col-solution"><textarea>ISOLATION THERMIQUE EXTÉRIEURE (ITE). Supprime ponts thermiques.
+✅ EXIGENCE AIDE : R ≥ 3.7 m².K/W.</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Fissures Façades"></td>
+                        <td><textarea>Fissures traversantes ou faïençage enduit. Infiltration eau.</textarea></td>
+                        <td class="col-solution">
+                            <textarea>RAVALEMENT ARMÉ (Treillis fibre de verre) inclus dans l'offre ITE.</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Ponts Thermiques"></td>
+                        <td><textarea>Moisissures dans les angles, spectre des parpaings visible.</textarea></td>
+                        <td class="col-solution">
+                            <textarea>ITE (Manteau continue) : Traite 100% des ponts thermiques structurels.</textarea>
+                        </td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-add no-print" onclick="add(this)">+ Ajouter Ligne</button>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="section-block">
+            <div class="section-header">
+                4. MENUISERIES (15% Déperditions)
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-check">Vu</th>
+                        <th class="col-desordre">Désordre Constaté</th>
+                        <th class="col-details">Impact & Observations</th>
+                        <th class="col-solution">SOLUTION & EXIGENCE AIDES (Uw)</th>
+                        <th class="col-action no-print"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Simple Vitrage"></td>
+                        <td><textarea>Vitre 3mm. Condensation (eau) le matin. Sensation froid.</textarea></td>
+                        <td class="col-solution"><textarea>DOUBLE VITRAGE ARGON (4/16/4).
+✅ EXIGENCE AIDE : Uw ≤ 1.3 W/m².K et Sw ≥ 0.3.</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Cadres Pourris / Fuites"></td>
+                        <td><textarea>Dormants bois dégradés. Passage d'air fenêtre fermée.</textarea></td>
+                        <td class="col-solution">
+                            <textarea>DÉPOSE TOTALE des anciens cadres et pose à neuf sur maçonnerie.</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Coffres Volets Vides"></td>
+                        <td><textarea>Caissons bois non isolés = Trous d'air directs dans la maison.</textarea></td>
+                        <td class="col-solution"><textarea>ISOLATION INTERNE COFFRE ou VOLET SOLAIRE FAÇADE.</textarea>
+                        </td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-add no-print" onclick="add(this)">+ Ajouter Ligne</button>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="section-block">
+            <div class="section-header">
+                5. VENTILATION (Vital pour la Santé)
+                <span class="badge">OBLIGATOIRE AIDES</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-check">Vu</th>
+                        <th class="col-desordre">Désordre Constaté</th>
+                        <th class="col-details">Impact & Observations</th>
+                        <th class="col-solution">SOLUTION TECHNIQUE</th>
+                        <th class="col-action no-print"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Absence VMC"></td>
+                        <td><textarea>Air vicié, CO2 élevé, odeurs, risque moisissures post-isolation.</textarea></td>
+                        <td class="col-solution"><textarea>INSTALLATION VMC HYGRORÉGLABLE (TYPE B) Basse Consommation.
+(Condition sine qua non pour valider l'Audit).</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Entrées d'Air Absentes"></td>
+                        <td><textarea>Fenêtres sans grilles. Maison "Bocal" étanche.</textarea></td>
+                        <td class="col-solution">
+                            <textarea>PERÇAGE TRAVERSES HAUTES + POSE GRILLES HYGRO (Salon/Chambres).</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Portes non détalonnées"></td>
+                        <td><textarea>Portes frottent au sol. L'air ne circule pas.</textarea></td>
+                        <td class="col-solution">
+                            <textarea>DÉTALONNAGE : Raboter 1.5cm sous toutes les portes intérieures.</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-add no-print" onclick="add(this)">+ Ajouter Ligne</button>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="section-block">
+            <div class="section-header">
+                6. CHAUFFAGE & EAU CHAUDE (Sortie Fossile)
+                <span class="badge">PRIMES MAX</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-check">Vu</th>
+                        <th class="col-desordre">Désordre Constaté</th>
+                        <th class="col-details">Impact & Observations</th>
+                        <th class="col-solution">SOLUTION & CRITÈRE PERFORMANCE</th>
+                        <th class="col-action no-print"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Chaudière FIOUL/GAZ"></td>
+                        <td><textarea>Polluante, interdite, coût exploitation explosif.</textarea></td>
+                        <td class="col-solution"><textarea>DÉPOSE TOTALE + PAC AIR/EAU (Pompe à Chaleur).
+✅ EXIGENCE : ETAS (Efficacité Saisonnière) ≥ 111%.</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Cuve à Fioul"></td>
+                        <td><textarea>Encombrante, risque fuite, odeur.</textarea></td>
+                        <td class="col-solution">
+                            <textarea>DÉGAZAGE + ENLÈVEMENT AVEC CERTIFICAT (Obligatoire pour Prime Dépose).</textarea>
+                        </td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Convecteurs (Grille-Pain)"></td>
+                        <td><textarea>Coût élec élevé, inconfort (pieds froids).</textarea></td>
+                        <td class="col-solution">
+                            <textarea>REMPLACEMENT PAR POMPE À CHALEUR AIR/AIR (Clim Réversible).</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Tuyaux non isolés"></td>
+                        <td><textarea>Réseau chaud traverse garage froid (-15% perte).</textarea></td>
+                        <td class="col-solution"><textarea>CALORIFUGEAGE CLASSE 4 (Manchons isolants épais).</textarea>
+                        </td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Eau Chaude Élec"></td>
+                        <td><textarea>Cumulus standard (COP=1) énergivore.</textarea></td>
+                        <td class="col-solution"><textarea>CHAUFFE-EAU THERMODYNAMIQUE (CET).
+✅ EXIGENCE : COP > 2.5.</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-add no-print" onclick="add(this)">+ Ajouter Ligne</button>
+        </div>
+
+        <!-- SECTION 7 -->
+        <div class="section-block">
+            <div class="section-header">7. PLANCHER BAS (10%)</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-check">Vu</th>
+                        <th class="col-desordre">Désordre</th>
+                        <th class="col-details">Impact</th>
+                        <th class="col-solution">SOLUTION (R ≥ 3.0)</th>
+                        <th class="col-action no-print"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Sol Glacé (Carrelage)"></td>
+                        <td><textarea>Dalle sur terre-plein froide. Inconfort.</textarea></td>
+                        <td class="col-solution">
+                            <textarea>ISOLATION SOUS-FACE (si cave) OU SOL SOUPLE (Confort uniquement).</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                    <tr>
+                        <td class="col-check"><input type="checkbox" checked></td>
+                        <td class="col-desordre"><input type="text" value="Plafond Cave/Garage"></td>
+                        <td><textarea>Non isolé. Perte calorie par le sol.</textarea></td>
+                        <td class="col-solution"><textarea>PANNEAUX FIXÉS EN PLAFOND SOUS-SOL.
+✅ EXIGENCE AIDE : R ≥ 3.0 m².K/W.</textarea></td>
+                        <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-add no-print" onclick="add(this)">+ Ajouter Ligne</button>
+        </div>
+
+        <!-- SYNTHESE FINALE -->
+        <div class="synthesis-container">
+            <div class="synthesis-header">📝 Synthèse et Validation de l'Audit</div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="font-weight: bold; color: #2c3e50;">BILAN DE L'AUDITEUR :</label>
+                <textarea
+                    style="width: 98%; height: 80px; margin-top: 5px;">Le bâtiment est une passoire thermique (Classe G). L'état structurel (humidité, toiture) doit être traité IMPÉRATIVEMENT avant l'isolation. Le scénario de rénovation globale proposé permet d'atteindre la Classe B, de diviser la facture par 3 et de débloquer les aides MaPrimeRénov' Parcours Accompagné.</textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <label style="font-weight: bold; color: #2c3e50;">SCÉNARIO DE TRAVAUX VALIDÉ :</label>
+                    <textarea style="width: 96%; height: 100px;">1. Assainissement (Humidité/Toit)
+2. Isolation Enveloppe (Toit R7 + Murs R3.7)
+3. Ventilation VMC Hygro B
+4. Remplacement Chauffage (PAC Air/Eau)</textarea>
+                </div>
+                <div>
+                    <label style="font-weight: bold; color: #2c3e50;">GAIN ÉNERGÉTIQUE VISÉ :</label>
+                    <textarea style="width: 96%; height: 100px;">Classement Actuel : G
+Classement Projeté : B
+Économie Energie Primaire : > 55%
+Sortie du statut de Passoire : OUI</textarea>
+                </div>
+            </div>
+
+            <div class="signature-block">
+                <div class="sig-box">
+                    <strong>L'AUDITEUR (Expert Rénovation)</strong><br>
+                    <span style="font-size: 11px;">Certifie l'exactitude des désordres relevés.</span>
+                    <br><br><br><br>
+                    Date : ..................................<br>
+                    Signature :
+                </div>
+                <div class="sig-box">
+                    <strong>LE PROPRIÉTAIRE (Client)</strong><br>
+                    <span style="font-size: 11px;">Reconnait avoir reçu les préconisations.</span>
+                    <br><br><br><br>
+                    Date : ..................................<br>
+                    Signature :
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <button class="btn floating-print" onclick="window.print()">
+        🖨️ Imprimer / Sauvegarder
+    </button>
+
+    <script>
+        // Ajout automatique de la hauteur des textarea
+        document.addEventListener('input', function (event) {
+            if (event.target.tagName.toLowerCase() !== 'textarea') return;
+            autoResize(event.target);
+        });
+
+        function autoResize(elem) {
+            elem.style.height = 'auto';
+            elem.style.height = (elem.scrollHeight) + 'px';
+        }
+
+        // Initialiser les tailles au chargement
+        window.onload = function () {
+            document.querySelectorAll('textarea').forEach(tx => autoResize(tx));
+        };
+
+        function add(btn) {
+            const table = btn.previousElementSibling;
+            const tbody = table.querySelector('tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td class="col-check"><input type="checkbox"></td>
+            <td class="col-desordre"><input type="text" placeholder="Désordre..."></td>
+            <td><textarea placeholder="Détails..."></textarea></td>
+            <td class="col-solution"><textarea placeholder="Solution technique..."></textarea></td>
+            <td class="no-print"><button class="btn btn-del" onclick="del(this)">X</button></td>
+        `;
+            tbody.appendChild(row);
+        }
+
+        function del(btn) {
+            if (confirm('Supprimer cette ligne ?')) {
+                btn.closest('tr').remove();
+            }
+        }
+    </script>
+
+</body>
+
+</html>
